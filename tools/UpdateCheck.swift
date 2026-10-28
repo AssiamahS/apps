@@ -38,7 +38,7 @@ final class UpdateChecker: ObservableObject {
         page.cachePolicy = .reloadIgnoringLocalCacheData
         guard let (data, _) = try? await URLSession.shared.data(for: page),
               let html = String(data: data, encoding: .utf8),
-              let m = html.firstMatch(of: /Build (\d+)(?: \(v([\d.]+)\))?/) else { return nil }
+              let m = html.firstMatch(of: #/Build (\d+)(?: \(v([\d.]+)\))?/#) else { return nil }
         return PublishedBuild(build: Int(m.1) ?? 0, version: m.2.map(String.init))
     }
 }
