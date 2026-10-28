@@ -176,6 +176,8 @@ job = f'''
             </dict>
           </dict></array></dict></plist>
           EOF2
+          # Lets the app itself check for updates (tools/UpdateCheck.swift).
+          printf '{"build":%s,"version":"%s","date":"%s"}\n' "$GITHUB_RUN_NUMBER" "$VERSION" "$(date -u +%Y-%m-%d)" > web/ipa/version.json
           sed -i '' -E "s/Build [^·]*· [^·]*·/Build $GITHUB_RUN_NUMBER (v$VERSION) · $(date -u +%Y-%m-%d) ·/; s/BUILD_NUMBER/$GITHUB_RUN_NUMBER/; s/BUILD_DATE/$(date -u +%Y-%m-%d)/" web/install.html || true
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
