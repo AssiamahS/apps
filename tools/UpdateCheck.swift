@@ -23,6 +23,8 @@ final class UpdateChecker: ObservableObject {
     var currentBuild: Int { Int(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "") ?? 0 }
 
     func check() async {
+        // Unstamped builds (simulator, UI tests, local) are CURRENT_PROJECT_VERSION 1: never nag those.
+        guard currentBuild > 1 else { return }
         guard let latest = await fetchLatest(), latest.build > currentBuild else { return }
         available = latest
     }
